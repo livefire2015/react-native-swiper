@@ -194,7 +194,12 @@ export default class extends Component {
 
   componentWillReceiveProps (nextProps) {
     if (!nextProps.autoplay && this.autoplayTimer) clearTimeout(this.autoplayTimer)
-    this.setState(this.initState(nextProps, this.props.index !== nextProps.index))
+    
+    // // NOTE: Bug: Every time the swiper re-renders the image changes to the last one but index remains 0
+    // // NOTE: Related bugs: https://github.com/leecade/react-native-swiper/issues/906  https://github.com/rossumai/elis-capture/issues/6  https://github.com/leecade/react-native-swiper/issues/82
+    // // NOTE: Reason: https://github.com/leecade/react-native-swiper/issues/82#issuecomment-199015888
+    // // NOTE: I think it's caused by this line of code. Basically, whenever the parent is re-rendered, the initial props get passed back in via componentWillReceiveProps(), which causes the Swiper to reset its state to the initial props. Changing this behavior should be as simple as removing componentWillReceiveProps(). I don't know the original intention of this change. @leecade?
+    // this.setState(this.initState(nextProps, this.props.index !== nextProps.index))
   }
 
   componentDidMount () {
